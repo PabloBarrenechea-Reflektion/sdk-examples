@@ -1,0 +1,14 @@
+{
+  "name": "SDK Examples",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": "",
+  "license": "",
+  "author": "",
+  "scripts": {
+    "start": "http-server ./src"
+  },
+  "dependencies": {
+    "http-server": "^14.0.0"
+  }
+}

@@ -1,0 +1,71 @@
+<html>
+<head>
+    <title>Basic Example</title>
+    <script type="text/javascript" src="vendor/rfk-sdk.js"></script>
+    <script type="module">
+
+        const MyWidget = ({
+            loading,
+            title,
+            products = [],
+            dispatch,
+        }) => {
+            const onPrevClick = () => {
+                if (index - 1 >= 0) {
+                    setIndex(index-1);
+                }
+                dispatch(RFK.RecommendationActions.NAVIGATION_PREV);
+            };
+
+            const onNextClick = () => {
+                if (index + 1 <= products.length -1) {
+                    setIndex(index + 1);
+                }
+                dispatch(RFK.RecommendationActions.NAVIGATION_NEXT);
+            };
+            const [index, setIndex] = RFK.ui.preact.useState(0);
+
+            return RFK.ui.html`
+                <div>
+                <h1>${title}</h1>
+                ${!loading && RFK.ui.html`
+                    <button onClick=${onPrevClick}>Prev</button>
+                    ${ products.length && RFK.ui.html`
+                    <div style="width: 200px; text-align: center;">
+                        <img width=200 src="${products[index].image_url}" />
+                        ${products[index].name}
+                        <br />
+                        <b>Product #: ${index}</b>
+                    </div>`}
+                    <button onClick=${onNextClick}>Next</button>
+                `}
+                ${loading && RFK.ui.html`<div>Loading ... </div>`}
+                </div>`;
+        };
+
+        window.onload = () => {
+
+            RFK.WidgetsConfig.setTypes({
+                recommendation: {
+                    Controller: RFK.WidgetControllers.getByType('recommendation'),
+                    Component: MyWidget,
+                    rfkId: 'hs_more'
+                },
+            });
+
+            RFK.init({
+                env: 'your environment here',
+                customerKey: 'your customer key here',
+                apiKey: '<your api here>',
+                useToken: true,
+                includeWidgets: ['hs_more'],
+            });
+        };
+    </script>
+</head>
+
+<body>
+    <div data-rfkid="hs_more"></div>
+</body>
+
+</html>
